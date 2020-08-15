@@ -1,13 +1,242 @@
+:root {
+  --color: #009688;
+  --btn: rgba(44, 206, 138, 0.3);
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Open Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.container {
+  width: 1140px;
+  margin: 0 auto;
+}
+
+.header {
+  padding: 20px 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #f7f7f7;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header nav ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+.header nav ul li a {
+  margin: 0 15px;
+  color: #333;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.user {
+  color: #333;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.user ul {
+  position: absolute;
+  display: none;
+  margin: 5px 0 0 0;
+  padding: 0 0;
+  min-width: 150px;
+  list-style: none;
+  background: var(--color);
+}
+
+.user ul li {
+  margin-top: 5px;
+}
+
+.user ul li a {
+  text-decoration: none;
+  color: #ffffff;
+  display: block;
+  padding: 10px 20px;
+}
+
+.user ul li a:hover {
+  background: #ffffff23;
+}
+
+.user.show ul {
+  display: block;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+}
+
+.item img {
+  width: 100%;
+}
+
+.item main h3 {
+  margin: 8px 0;
+  color: #333;
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.item main p {
+  margin: 0;
+  font-size: 15px;
+  color: #696969;
+  line-height: 1.7;
+}
+
+.item main .price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item main button {
+  padding: 7px 10px;
+  margin: 10px 0;
+  border-radius: 3px;
+  border: none;
+  background-color: var(--btn);
+  cursor: pointer;
+  font-family: "Open Sans", sans-serif;
+  font-size: 15px;
+}
+
+.item main span {
+  font-size: 20px;
+  /* margin-right: 40px; */
+}
+
+.products {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.products .item {
+  flex-basis: 23%;
+  margin: 25px 0;
+}
+
+form {
+  padding: 15px;
+  margin: 10px 0;
+}
+
+form .input-group {
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+form .input-group input {
+  font-family: "Open Sans", sans-serif;
+  padding: 8px;
+  font-size: 16px;
+  margin: 5px 0;
+  border: 1px solid #e6e6e6;
+}
+
+form input[type="submit"] {
+  padding: 7px 15px;
+  margin: 10px 0;
+  border-radius: 3px;
+  border: none;
+  background-color: var(--btn);
+  cursor: pointer;
+  font-family: "Open Sans", sans-serif;
+  font-size: 17px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: "Open Sans", sans-serif;
+  font-size: 18px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 10px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+th {
+  background-color: var(--color);
+  color: white;
+}
+
+.registeration-model {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  width: 400px;
+  padding: 20px;
+  z-index: 1;
+}
+
+.registeration-model + .overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.registeration-model .btn {
+  padding: 7px 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--color);
+  /* background-color: var(--color); */
+  color: #fff;
+  cursor: pointer;
+  font-family: "Open Sans", sans-serif;
+  font-size: 15px;
+}
+
+.registeration-model .btn.active {
+  background-color: var(--btn);
+  cursor: not-allowed;
+}
+
+.registration-btn {
+  padding: 7px 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: none;
+  /* background-color: var(--btn); */
+  background-color: var(--color);
+  color: #fff;
+  cursor: pointer;
+  font-family: "Open Sans", sans-serif;
+  font-size: 17px;
 }
