@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import User from "./user";
 import Registeration from "./registeration";
+import { UserContext } from "../contexts/userContext";
 
 class Navbar extends Component {
+  static contextType = UserContext;
   state = {
-    isLogged: true,
     model: false,
   };
 
@@ -18,6 +19,7 @@ class Navbar extends Component {
   };
 
   render() {
+    const { isLogged } = this.context;
     return (
       <header className="header">
         <div className="container">
@@ -33,14 +35,7 @@ class Navbar extends Component {
               eCommerce React App
             </Link>
           </h1>
-          {/* <nav>
-            <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/">Free</Link></li>
-              <li><Link to="/">Paid</Link></li>
-            </ul>
-          </nav> */}
-          {this.state.isLogged ? (
+          {isLogged ? (
             <User />
           ) : (
             <button className="registration-btn" onClick={this.handleClick}>
