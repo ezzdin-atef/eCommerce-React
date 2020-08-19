@@ -42,7 +42,7 @@ class Navbar extends Component {
               Registeration
             </button>
           )}
-          {this.state.model ? <Registeration hideModel={this.hideModel} /> : ""}
+          {this.state.model ? <Registeration hideModel={this.hideModel} closeModel={this.handleClick} /> : ""}
         </div>
       </header>
     );

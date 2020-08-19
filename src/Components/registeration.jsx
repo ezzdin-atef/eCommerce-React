@@ -26,7 +26,7 @@ class Registeration extends Component {
               Sign UP
             </span>
           </header>
-          {this.state.model === "SignUP" ? <SignUP /> : <SignIN />}
+          {this.state.model === "SignUP" ? <SignUP closeModel={this.props.closeModel} /> : <SignIN closeModel={this.props.closeModel} />}
         </div>
         <div className="overlay" onClick={this.props.hideModel}></div>
       </React.Fragment>

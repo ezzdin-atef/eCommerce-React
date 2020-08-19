@@ -1,48 +1,73 @@
-import React, { Component } from "react";
+import React, { useState, useContext } from "react";
+import { gql, useLazyQuery  } from "@apollo/client";
+import { UserContext } from "../contexts/userContext";
 
-class SignIN extends Component {
-  state = {
-    email: "",
-    password: "",
-  };
 
-  onChange = (e, type) => {
+function SignIN({ closeModel }) {
+  const contextType = useContext(UserContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const Signin = gql`
+    query logIn($email: String!, $password: String!) {
+      login(email: $email, password: $password)
+    }
+  `;
+
+  const [logIn, { data }] = useLazyQuery(Signin);
+
+  const onChange = (e, type) => {
     switch (type) {
       case "email":
-        this.setState({ email: e.target.value });
+        setEmail(e.target.value);
         break;
       case "password":
-        this.setState({ password: e.target.value });
+        setPassword(e.target.value);
+        break;
+      default:
         break;
     }
   };
 
-  render() {
-    const { email, password } = this.state;
-    return (
-      <form>
-        <div className="input-group">
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => this.onChange(e, "email")}
-            required="required"
-          />
-        </div>
-        <div className="input-group">
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => this.onChange(e, "password")}
-            required="required"
-          />
-        </div>
-        <input type="submit" value="Save" />
-      </form>
-    );
+  if (data && data.login !== "Password is Wrong") {
+    console.log(data.login);
+    contextType.addJWT(data.login);
+    closeModel();
   }
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    logIn({
+      variables: {
+        email: email,
+        password: password,
+      },
+    });
+  };
+
+  return (
+    <form onSubmit={onSubmit}>
+      <div className="input-group">
+        <label>Email:</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => onChange(e, "email")}
+          required="required"
+        />
+      </div>
+      <div className="input-group">
+        <label>Password:</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => onChange(e, "password")}
+          required="required"
+        />
+      </div>
+      <input type="submit" value="Save" />
+    </form>
+  );
 }
 
 export default SignIN;

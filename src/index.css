@@ -134,8 +134,13 @@ code {
 }
 
 .products .item {
-  flex-basis: 23%;
+  width: 23%;
   margin: 25px 0;
+  overflow: hidden;
+}
+
+.products .item img {
+  width: 100%;
 }
 
 form {

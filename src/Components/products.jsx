@@ -1,25 +1,26 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Item from './item';
+import { gql, useQuery } from '@apollo/client';
 
-class Products extends Component {
-  state = {  }
-  render() { 
-    return (
-      <div className="products">
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-      </div>
-    );
-  }
+function Products() {
+  const ProductsQuery = gql`
+    query PRODUCTS {
+      Products {
+        id
+        title
+        description
+        price
+      }
+    }
+  `;
+
+  const { data, loading } = useQuery(ProductsQuery);
+  if (loading) return <div className="products">Loading ...</div>
+  return (
+    <div className="products">
+      {data.Products.map(el => <Item key={el.id} title={el.title} description={el.description} price={el.price} />)}
+    </div>
+  );
 }
  
 export default Products;
