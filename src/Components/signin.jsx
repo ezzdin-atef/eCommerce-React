@@ -7,6 +7,7 @@ function SignIN({ closeModel }) {
   const contextType = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [finish, setFinish] = useState(false);
 
   const Signin = gql`
     query logIn($email: String!, $password: String!) {
@@ -14,7 +15,7 @@ function SignIN({ closeModel }) {
     }
   `;
 
-  const [logIn, { data }] = useLazyQuery(Signin);
+  const [logIn, { data, loading }] = useLazyQuery(Signin);
 
   const onChange = (e, type) => {
     switch (type) {
@@ -29,10 +30,10 @@ function SignIN({ closeModel }) {
     }
   };
 
-  if (data && data.login !== "Password is Wrong") {
-    console.log(data.login);
+  if (data && data.login !== "Password is Wrong" && !finish && !loading ) {
     contextType.addJWT(data.login);
     closeModel();
+    setFinish(true);
   }
 
   const onSubmit = (e) => {

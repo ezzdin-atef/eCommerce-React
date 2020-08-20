@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { UserContext } from "../contexts/userContext";
+import { toast } from 'react-toastify';
 var jwt = require('jsonwebtoken');
 
 function Profile() {
@@ -10,6 +11,8 @@ function Profile() {
   const [lastName, setLastName] = useState(lName || "");
   const [email, setEmail] = useState(mail || "");
   const [password, setPassword] = useState("");
+  const [disable, setDisable] = useState(false);
+  const notify = () => toast.info('All Changes Saved Successfully');
 
   const EditProfile = gql`
     mutation Editprofile($id: ID!, $fname: String!, $lname: String!, $email: String!, $password: String) {
@@ -40,6 +43,7 @@ function Profile() {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    setDisable(true);
     Editprofile({
       variables: {
         id: _id,
@@ -50,8 +54,10 @@ function Profile() {
       },
     }).then(res => {
       contextType.addJWT(res.data.editUser);
-      console.log("saved");  // It's should show a message in UI
+      notify();
     }).catch(err => console.log(err));
+
+    return setDisable(false);
   };
 
   return (
@@ -74,7 +80,7 @@ function Profile() {
           <label>Password:</label>
           <input type="password" value={password} onChange={(e) => onChange(e, "password")} />
         </div>
-        <input type="submit" value="Save" />
+        <input type="submit" value="Save" disabled={disable? "disabled" : ""} />
       </form>
     </React.Fragment>
   );

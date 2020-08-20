@@ -7,6 +7,8 @@ import Orders from "./Components/orders";
 import AddProduct from "./Components/addProduct";
 import { UserContext } from "./contexts/userContext";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import "font-awesome/css/font-awesome.css";
 
 const client = new ApolloClient({
@@ -19,6 +21,7 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
+      <ToastContainer />
       <div className="App">
         <Navbar />
         <div className="container">

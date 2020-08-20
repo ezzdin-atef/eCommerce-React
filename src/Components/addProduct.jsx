@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
-import { Redirect } from "react-router-dom";
+import { toast } from 'react-toastify';
 const jwt = require("jsonwebtoken");
 
 function AddProduct(props) {
@@ -8,6 +8,8 @@ function AddProduct(props) {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
   const {_id} = jwt.decode(localStorage.getItem("jwt"));
+
+  const notify = () => toast.info('The Product Added Successfully');
 
   const AddProductQuery = gql`
     mutation ADDPRODUCT($id: ID!, $title: String!, $description: String!, $price: Int) {
@@ -44,8 +46,10 @@ function AddProduct(props) {
         description: description,
         price: parseInt(price, 10),
       }
-    }).then(res => props.history.push("/")
-    ).catch(err => console.log(err));
+    }).then(res => {
+      notify();
+      props.history.push("/");
+    }).catch(err => console.log(err));
   }
 
   return (
