@@ -10,9 +10,15 @@ class Navbar extends Component {
     model: false,
   };
 
+  componentDidUpdate() {
+    if (localStorage.getItem("jwt") && this.state.model) {
+      this.setState({model: !this.state.model});
+    }
+  }
+
   handleClick = () => {
-    this.setState({ model: !this.state.model });
-  };
+    this.setState({model: !this.state.model});
+  }
 
   hideModel = () => {
     this.setState({ model: false });

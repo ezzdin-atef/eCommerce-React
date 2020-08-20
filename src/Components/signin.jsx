@@ -1,21 +1,21 @@
 import React, { useState, useContext } from "react";
-import { gql, useLazyQuery  } from "@apollo/client";
+import { gql, useApolloClient  } from "@apollo/client";
 import { UserContext } from "../contexts/userContext";
-
+import { toast } from 'react-toastify';
 
 function SignIN({ closeModel }) {
   const contextType = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [finish, setFinish] = useState(false);
+  const [disable, setDisable] = useState(false);
+  const notify = (message) => toast.error(message);
 
   const Signin = gql`
     query logIn($email: String!, $password: String!) {
       login(email: $email, password: $password)
     }
   `;
-
-  const [logIn, { data, loading }] = useLazyQuery(Signin);
+  const client = useApolloClient();
 
   const onChange = (e, type) => {
     switch (type) {
@@ -30,19 +30,24 @@ function SignIN({ closeModel }) {
     }
   };
 
-  if (data && data.login !== "Password is Wrong" && !finish && !loading ) {
-    contextType.addJWT(data.login);
-    closeModel();
-    setFinish(true);
-  }
-
   const onSubmit = (e) => {
     e.preventDefault();
-    logIn({
+    setDisable(true);
+    client.query({
+      query: Signin,
       variables: {
         email: email,
         password: password,
-      },
+      }
+    }).then((result) => {
+      if (result.data.login === "Password is Wrong") {
+      notify("Password is Wrong"); 
+      setDisable(false);
+    }
+      else contextType.addJWT(result.data.login);
+    }).catch((err) => {
+      notify(err);
+      setDisable(false);
     });
   };
 
@@ -66,7 +71,7 @@ function SignIN({ closeModel }) {
           required="required"
         />
       </div>
-      <input type="submit" value="Save" />
+      <input type="submit" value="Save" disabled={disable? "disabled" : ""}/>
     </form>
   );
 }
