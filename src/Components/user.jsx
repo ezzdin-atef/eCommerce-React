@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../contexts/userContext";
+var jsonwebtoken = require("jsonwebtoken");
 
 class User extends Component {
   state = { show: false };
@@ -11,13 +12,14 @@ class User extends Component {
   };
 
   render() {
-    const { logout } = this.context;
+    const { logout, jwt } = this.context;
+    const { admin } = jsonwebtoken.decode(jwt);
     return (
       <span
         className={`user ${this.state.show ? "show" : ""}`}
         onClick={this.handleDropdownMenu}
       >
-        Username <i className="fa fa-caret-down" aria-hidden="true"></i>
+        Menu <i className="fa fa-caret-down" aria-hidden="true"></i>
         <ul>
           <li>
             <Link to="/profile">Profile</Link>
@@ -25,9 +27,13 @@ class User extends Component {
           <li>
             <Link to="/orders">Orders</Link>
           </li>
-          <li>
-            <Link to="/add">Add Product</Link>
-          </li>
+          {
+            admin &&
+            <li>
+              <Link to="/add">Add Product</Link>
+            </li>
+          }
+          
           <li>
             <Link to="">Payments</Link>
           </li>

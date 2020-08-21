@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { toast } from 'react-toastify';
+import { projectStorage } from '../firebase/config';
 const jwt = require("jsonwebtoken");
 
 function AddProduct(props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
+  const [file, setFile] = useState(null);
+  const [disable, setDisable] = useState(false);
   const {_id} = jwt.decode(localStorage.getItem("jwt"));
 
   const notify = () => toast.info('The Product Added Successfully');
 
   const AddProductQuery = gql`
-    mutation ADDPRODUCT($id: ID!, $title: String!, $description: String!, $price: Int) {
-      addProduct(title: $title, description: $description, price: $price, seller: $id) {
+    mutation ADDPRODUCT($id: ID!, $title: String!, $description: String!, $price: Int, $photoUrl: String!) {
+      addProduct(title: $title, description: $description, price: $price, seller: $id, photoUrl: $photoUrl) {
         id
       }
     }
@@ -32,6 +35,12 @@ function AddProduct(props) {
       case "price":
         setPrice(e.target.value);
         break;
+      case "file":
+        const file = e.target.files[0];
+        if (["image/png", "image/jpeg"].includes(file.type)) {
+          setFile(file)
+        }
+        break;
       default:
         break;
     }
@@ -39,17 +48,28 @@ function AddProduct(props) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    ADDPRODUCT({
-      variables: {
-        id: _id,
-        title: title,
-        description: description,
-        price: parseInt(price, 10),
-      }
-    }).then(res => {
-      notify();
-      props.history.push("/");
-    }).catch(err => console.log(err));
+    setDisable(true);
+    const storageRef = projectStorage.ref(file.name + "+" + new Date());
+    storageRef.put(file).then(() => {
+      storageRef.getDownloadURL().then((url) => {
+        console.log(url);
+        ADDPRODUCT({
+          variables: {
+            id: _id,
+            title: title,
+            description: description,
+            price: parseInt(price, 10),
+            photoUrl: url
+          }
+        }).then(res => {
+          notify();
+          props.history.push("/");
+        }).catch(err => {
+          console.log(err);
+          setDisable(false);
+        });
+      });
+    });
   }
 
   return (
@@ -62,6 +82,7 @@ function AddProduct(props) {
             type="text"
             value={title}
             onChange={(e) => onChange(e, "title")}
+            required="required"
           />
         </div>
         <div className="input-group">
@@ -70,6 +91,7 @@ function AddProduct(props) {
             type="text"
             value={description}
             onChange={(e) => onChange(e, "description")}
+            required="required"
           />
         </div>
         <div className="input-group">
@@ -78,9 +100,18 @@ function AddProduct(props) {
             type="number"
             value={price}
             onChange={(e) => onChange(e, "price")}
+            required="required"
           />
         </div>
-        <input type="submit" value="Add" />
+        <div className="input-group">
+          <label>Photo:</label>
+          <input
+            type="file"
+            onChange={(e) => onChange(e, "file")}
+            required="required"
+          />
+        </div>
+        <input type="submit" value="Add" disabled={disable? "disabled" : ""} />
       </form>
     </React.Fragment>
   );
