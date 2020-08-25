@@ -11,7 +11,7 @@ function Item({id, title, description, price, photo}) {
     const stripe = await stripePromise;
 
     // Call your backend to create the Checkout Session
-    const response = await fetch('https://ecommerce-api-123.herokuapp.com/create-checkout-session', 
+    const response = await fetch('https://cors-anywhere.herokuapp.com/https://ecommerce-api-123.herokuapp.com/create-checkout-session', 
       { 
         method: 'POST', 
         body: JSON.stringify({
