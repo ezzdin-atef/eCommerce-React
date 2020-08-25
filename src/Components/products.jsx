@@ -34,7 +34,7 @@ function Products() {
 
   return (
     <div className="products">
-      {data.Products.map(el => <Item key={el.id} title={el.title} description={el.description} price={el.price} photo={el.photoUrl} />)}
+      {data.Products.map(el => <Item key={el.id} id={el.id} title={el.title} description={el.description} price={el.price} photo={el.photoUrl} />)}
     </div>
   );
 }

@@ -5,6 +5,7 @@ import Products from "./Components/products";
 import Profile from "./Components/profile";
 import Orders from "./Components/orders";
 import AddProduct from "./Components/addProduct";
+import SuccessOrder from "./Components/successOrder";
 import { UserContext } from "./contexts/userContext";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { ToastContainer } from "react-toastify";
@@ -29,6 +30,7 @@ function App() {
             <Route path="/add" exact component={(props) => contextType.isLogged? <AddProduct {...props} /> : <Redirect to="/" />} />
             <Route path="/profile" exact component={(props) => contextType.isLogged? <Profile {...props} /> : <Redirect to="/" />} />
             <Route path="/orders" exact component={(props) => contextType.isLogged? <Orders {...props} /> : <Redirect to="/" />} />
+            <Route path="/success/:id" exact component={(props) => contextType.isLogged? <SuccessOrder {...props} /> : <Redirect to="/" />} />
             <Route path="/" exact component={Products} />
           </Switch>
         </div>
