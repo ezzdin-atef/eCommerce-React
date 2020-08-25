@@ -2,7 +2,7 @@ import React from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 const stripePromise = loadStripe('pk_test_51HIVUVDumGswNoybY7MQ9qUqmpFa2Hbz1AwI5bj0zh3m2ba5giYJFd5FpJd9SCHaFBop6w6B4bzz6sihyrPvsFNk00cUsj2mHI');
 var jwt = require('jsonwebtoken');
-const {_id, orders} = jwt.decode(localStorage.getItem("jwt"));
+const {orders} = jwt.decode(localStorage.getItem("jwt")) || {orders: []};
 
 function Item({id, title, description, price, photo}) {
 
@@ -16,7 +16,6 @@ function Item({id, title, description, price, photo}) {
         method: 'POST', 
         body: JSON.stringify({
           id: id,
-          userID: _id,
           title: title,
           description: description,
           price: price,
