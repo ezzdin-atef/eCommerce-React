@@ -4,6 +4,7 @@ const stripePromise = loadStripe('pk_test_51HIVUVDumGswNoybY7MQ9qUqmpFa2Hbz1AwI5
 var jwt = require('jsonwebtoken');
 const {orders} = jwt.decode(localStorage.getItem("jwt")) || {orders: []};
 
+
 function Item({id, title, description, price, photo}) {
 
   const onPurchase = async (event) => {
@@ -11,7 +12,7 @@ function Item({id, title, description, price, photo}) {
     const stripe = await stripePromise;
 
     // Call your backend to create the Checkout Session
-    const response = await fetch('https://cors-anywhere.herokuapp.com/https://ecommerce-api-123.herokuapp.com/create-checkout-session', 
+    const response = await fetch('https://ecommerce-api-123.herokuapp.com/create-checkout-session', 
       { 
         method: 'POST', 
         body: JSON.stringify({
@@ -23,7 +24,7 @@ function Item({id, title, description, price, photo}) {
         }),
         headers: {
           'Content-type': 'application/json'
-        } 
+        },
       });
 
     const session = await response.json();
