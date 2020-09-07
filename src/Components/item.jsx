@@ -27,12 +27,14 @@ function Item({id, title, description, price, photo}) {
         },
       });
 
+    console.log("sending Request");
     const session = await response.json();
-
+    console.log(session);
     // When the customer clicks on the button, redirect them to Checkout.
     const result = await stripe.redirectToCheckout({
       sessionId: session.id,
     });
+    console.log(result);
 
     if (result.error) {
       // If `redirectToCheckout` fails due to a browser or network
