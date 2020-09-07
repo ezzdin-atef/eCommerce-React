@@ -51,7 +51,7 @@ function Item({id, title, description, price, photo}) {
         <h3>{title}</h3>
         <p>{description}</p>
         <div className="price">
-          {orders.includes(id)? <button disabled="disabled">Purchased</button> : <button role="link" onClick={onPurchase}>Purchase</button>}
+          {orders.includes(id) || !localStorage.getItem("jwt")? <button disabled="disabled">Purchased</button> : <button role="link" onClick={onPurchase}>Purchase</button>}
           
           <span>${price}</span>
         </div>
